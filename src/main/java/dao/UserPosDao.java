@@ -1,5 +1,6 @@
 package dao;
 
+import java.security.KeyStore.ProtectionParameter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,6 +80,22 @@ public class UserPosDao {
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, userposjava.getNome());
 			statement.execute();
+			connection.commit();
+		} catch (Exception e) {
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+	}
+	
+	public void deletar(Long id){
+		try {
+			String sql = "delete from userposjava where id = " + id;
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.execute();
 			connection.commit();
 		} catch (Exception e) {
 			try {
